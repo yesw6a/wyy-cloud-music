@@ -1,0 +1,26 @@
+@import "../../App.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: 53.3333vw;
+  min-width: 26.6667vw;
+  .img-error {
+    width: 46.6667vw;
+  }
+
+  .img-empty {
+    width: 46.6667vw;
+  }
+
+  .divider {
+    min-height: 3.3333vw;
+  }
+
+  .tips {
+    color: $BlackS;
+  }
+}

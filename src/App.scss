@@ -1,0 +1,31 @@
+/* Color */
+$Primary: #d43c33;
+$Divider: #eeeeee;
+
+$BlackS: #333333;
+$BlackM: #666666;
+
+.app {
+  position: relative;
+}
+
+// #region: 单行文字溢出省略号显示（某些浏览器需设置宽度）
+@mixin single-line-ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+// #region: 多行文本溢出省略号显示
+// @param {Number} $num - 展示行数
+@mixin multi-line-ellipsis($num) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $num;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
