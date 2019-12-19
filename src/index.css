@@ -8,7 +8,6 @@ body {
   font-size: 1.7333vw;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+* {
+  box-sizing: border-box;
 }

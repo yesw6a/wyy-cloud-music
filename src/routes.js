@@ -1,13 +1,21 @@
 import Home from "./pages/tabs/home";
+import Hot from "./pages/tabs/hot";
 import NotFound from "./pages/notFound";
 
 export default [
   {
     path: "/",
     exact: true,
-    components: Home
+    component: Home
   },
   {
-    components: NotFound
+    path: "/hot",
+    exact: false,
+    component: Hot
+  },
+  {
+    path: "",
+    exact: false,
+    component: NotFound
   }
 ];

@@ -1,0 +1,54 @@
+@import "../../../../../App.scss";
+
+$imgSize: 31.2vw;
+
+.personalized-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0 1.6vw;
+}
+
+.album {
+  margin-bottom: 2.1333vw;
+  .card {
+    position: relative;
+    .img {
+      width: $imgSize;
+      height: $imgSize;
+    }
+    .play-count {
+      position: absolute;
+      right: 5px;
+      top: 2px;
+      font-size: 1.6vw;
+      color: $White;
+      z-index: 3;
+    }
+    &::after {
+      content: " ";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2.6667vw;
+      background-image: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.2),
+        transparent
+      );
+      z-index: 2;
+    }
+  }
+}
+
+.title {
+  padding: 1.6vw 0.2667vw 0 0.8vw;
+  max-width: $imgSize;
+  font-size: 1.7333vw;
+  line-height: 1.2;
+  min-height: 4vw;
+  overflow: hidden;
+
+  @include multi-line-ellipsis(2);
+}
