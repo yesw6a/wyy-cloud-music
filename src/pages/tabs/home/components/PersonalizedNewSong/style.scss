@@ -1,0 +1,38 @@
+@import "../../../../../App.scss";
+
+.personalized_new_song-wrapper {
+  .item-wrapper {
+    display: flex;
+    align-items: center;
+    padding-left: 2.6667vw;
+    .song-info {
+      flex: 1;
+      padding: 1.6vw 0;
+      .song-name {
+        font-size: 4.5333vw;
+
+        @include single-line-ellipsis();
+        .name {
+          color: $BlackS;
+        }
+        .info {
+          margin-left: 1.0667vw;
+          color: $BlackL;
+        }
+      }
+      .author {
+        font-size: 3.2vw;
+        color: $BlackL;
+      }
+    }
+    .play {
+      padding: 0 2.6667vw;
+      .icon-play {
+        $IconPlaySize: 6.9333vw;
+        width: $IconPlaySize;
+        height: $IconPlaySize;
+        color: $BlackL;
+      }
+    }
+  }
+}

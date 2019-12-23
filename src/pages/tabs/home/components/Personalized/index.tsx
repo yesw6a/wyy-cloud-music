@@ -5,7 +5,7 @@ import UnitConversion from "../../../../../lib/unitConversion";
 
 import "./style.scss";
 
-interface personalized {
+interface Personalized {
   alg: string;
   copywriter: string;
   canDislike: boolean;
@@ -32,7 +32,7 @@ function Personalized() {
     });
   }, []);
 
-  const renderItem = ({ id, name, picUrl, playCount }: personalized) => {
+  const renderItem = ({ id, name, picUrl, playCount }: Personalized) => {
     return (
       <div className="album">
         <div className="card">
@@ -51,7 +51,7 @@ function Personalized() {
   return (
     <div className="personalized-wrapper">
       {personalizedList &&
-        personalizedList.result.map((item: personalized) => {
+        personalizedList.result.map((item: Personalized) => {
           return <div key={item.id}>{renderItem(item)}</div>;
         })}
     </div>

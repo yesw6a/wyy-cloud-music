@@ -6,6 +6,7 @@ import LogoTitle from "../../../assets/images/logo_full_white.png";
 
 import "./style.scss";
 import Personalized from "./components/Personalized";
+import PersonalizedNewSong from "./components/PersonalizedNewSong";
 
 function Home() {
   const renderHeader = () => {
@@ -17,9 +18,14 @@ function Home() {
   };
 
   return (
-    <PageView>
+    <PageView className="home">
       {renderHeader()}
-      <Personalized />
+      <div className="container">
+        <div className="module-title">推荐歌单</div>
+        <Personalized />
+        <div className="module-title">最新音乐</div>
+        <PersonalizedNewSong />
+      </div>
     </PageView>
   );
 }

@@ -56,7 +56,7 @@ function StatusView({ status, tips, style, children }: IProps) {
   }
 
   return (
-    <div style={style} className="container">
+    <div style={style} className="status-view">
       {view}
     </div>
   );
