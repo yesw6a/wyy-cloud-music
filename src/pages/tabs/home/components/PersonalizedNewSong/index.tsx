@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { getPersonalizedNewSong } from "../../../../../stores/SongsStore";
 import useRequest from "../../../../../hooks/useRequest";
 import { PlayCircleOutlineOutlined } from "@material-ui/icons";
+import { Skeleton } from "@material-ui/lab";
 
 import "./style.scss";
 
@@ -51,16 +52,35 @@ function PersonalizedNewSong() {
     );
   };
 
-  if (!newSongList) {
-    return <div>加载中</div>;
-  }
+  const renderSkel = () => {
+    return Array(10)
+      .fill("")
+      .map(() => {
+        return (
+          <div className="item-wrapper">
+            <div className="song-info">
+              <div className="song-name">
+                <Skeleton variant="text" width="66vw" height="7vw" />
+              </div>
+              <div className="author">
+                <Skeleton variant="text" width="40vw" />
+              </div>
+            </div>
+            <div className="play">
+              <Skeleton variant="rect" width="7vw" height="7vw" />
+            </div>
+          </div>
+        );
+      });
+  };
 
   return (
     <div className="personalized_new_song-wrapper">
-      {newSongList &&
-        newSongList.result.map((item: PersonalizedNewSong) => {
-          return <div key={item.id}>{renderItem(item)}</div>;
-        })}
+      {!newSongList
+        ? renderSkel()
+        : newSongList.result.map((item: PersonalizedNewSong) => {
+            return <div key={item.id}>{renderItem(item)}</div>;
+          })}
     </div>
   );
 }

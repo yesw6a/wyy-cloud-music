@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { getPersonalized } from "../../../../../stores/SongsStore";
 import useRequest from "../../../../../hooks/useRequest";
 import UnitConversion from "../../../../../lib/unitConversion";
+import { Skeleton } from "@material-ui/lab";
 
 import "./style.scss";
 
@@ -44,16 +45,29 @@ function Personalized() {
     );
   };
 
-  if (!personalizedList) {
-    return <div>加载中</div>;
-  }
+  const renderSkel = () => {
+    const baseSize = 31.2;
+    const imgSize = `${baseSize}vw`;
+    return Array(6)
+      .fill("")
+      .map(() => {
+        return (
+          <div>
+            <Skeleton variant="rect" width={imgSize} height={imgSize} />
+            <Skeleton variant="text" width={imgSize} />
+            <Skeleton variant="text" width={`${baseSize * 0.8}vw`} />
+          </div>
+        );
+      });
+  };
 
   return (
     <div className="personalized-wrapper">
-      {personalizedList &&
-        personalizedList.result.map((item: Personalized) => {
-          return <div key={item.id}>{renderItem(item)}</div>;
-        })}
+      {!personalizedList
+        ? renderSkel()
+        : personalizedList.result.map((item: Personalized) => {
+            return <div key={item.id}>{renderItem(item)}</div>;
+          })}
     </div>
   );
 }

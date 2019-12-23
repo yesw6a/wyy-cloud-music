@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import PageView from "../../../components/PageView";
-import SkelAlbum from "../../../components/Skeletons/Album";
 
 import LogoTitle from "../../../assets/images/logo_full_white.png";
 

@@ -4,7 +4,8 @@
   .item-wrapper {
     display: flex;
     align-items: center;
-    padding-left: 2.6667vw;
+    margin-left: 2.6667vw;
+    border-bottom: 0.1333vw solid $Divider;
     .song-info {
       flex: 1;
       padding: 1.6vw 0;
@@ -28,7 +29,7 @@
     .play {
       padding: 0 2.6667vw;
       .icon-play {
-        $IconPlaySize: 6.9333vw;
+        $IconPlaySize: 7vw;
         width: $IconPlaySize;
         height: $IconPlaySize;
         color: $BlackL;
