@@ -50,9 +50,9 @@ function Personalized() {
     const imgSize = `${baseSize}vw`;
     return Array(6)
       .fill("")
-      .map(() => {
+      .map((item, index) => {
         return (
-          <div>
+          <div key={index}>
             <Skeleton variant="rect" width={imgSize} height={imgSize} />
             <Skeleton variant="text" width={imgSize} />
             <Skeleton variant="text" width={`${baseSize * 0.8}vw`} />

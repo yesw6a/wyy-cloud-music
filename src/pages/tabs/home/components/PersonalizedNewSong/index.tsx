@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { Skeleton } from "@material-ui/lab";
+import { PlayCircleOutlineOutlined as PlayCircleOutlineOutlinedIcon } from "@material-ui/icons";
 import { getPersonalizedNewSong } from "../../../../../stores/SongsStore";
 import useRequest from "../../../../../hooks/useRequest";
-import { PlayCircleOutlineOutlined } from "@material-ui/icons";
-import { Skeleton } from "@material-ui/lab";
 
 import "./style.scss";
 
@@ -10,7 +11,7 @@ interface PersonalizedNewSong {
   alg: string;
   canDislike: boolean;
   copywriter: string;
-  id: string;
+  id: number;
   name: string;
   picUrl: string;
   song: any;
@@ -19,6 +20,7 @@ interface PersonalizedNewSong {
 }
 
 function PersonalizedNewSong() {
+  const history = useHistory();
   const [requestPersonalizedNewSong, newSongList] = useRequest(
     getPersonalizedNewSong
   );
@@ -27,13 +29,17 @@ function PersonalizedNewSong() {
     requestPersonalizedNewSong();
   }, []);
 
+  const handlePlay = (id: number) => {
+    history.push(`/song?id=${id}`);
+  };
+
   const renderItem = ({
     id,
     name,
     song: { album, artists, alias }
   }: PersonalizedNewSong) => {
     return (
-      <div className="item-wrapper">
+      <div className="item-wrapper" onClick={() => handlePlay(id)}>
         <div className="song-info">
           <div className="song-name">
             <span className="name">{name}</span>
@@ -46,7 +52,7 @@ function PersonalizedNewSong() {
           </div>
         </div>
         <div className="play">
-          <PlayCircleOutlineOutlined className="icon-play" />
+          <PlayCircleOutlineOutlinedIcon className="icon-play" />
         </div>
       </div>
     );
@@ -55,9 +61,9 @@ function PersonalizedNewSong() {
   const renderSkel = () => {
     return Array(10)
       .fill("")
-      .map(() => {
+      .map((_item, index) => {
         return (
-          <div className="item-wrapper">
+          <div key={index} className="item-wrapper">
             <div className="song-info">
               <div className="song-name">
                 <Skeleton variant="text" width="66vw" height="7vw" />

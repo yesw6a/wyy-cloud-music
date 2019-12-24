@@ -1,0 +1,111 @@
+@import "../../App.scss";
+
+.player-wrapper {
+  overflow: hidden;
+  .bg {
+    filter: blur(4px) brightness(50%);
+    background-color: #161824;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    transform: scale(1.5);
+    transform-origin: center top;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: -5vw;
+    height: 100%;
+    overflow: hidden;
+    transition: opacity 0.3s linear;
+  }
+  .inner-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    .disc-wrapper {
+      position: relative;
+      padding-top: 18.6667vw;
+      .needle {
+        position: absolute;
+        width: 25vw;
+        top: 0px;
+        left: 45vw;
+        z-index: 7;
+      }
+      .disc {
+        position: relative;
+        margin: 0 auto;
+        width: 78.9333vw;
+        height: 78.9333vw;
+        &::after {
+          content: " ";
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          z-index: 2;
+          background: url("../../assets/images/disc.png") no-repeat;
+          background-size: contain;
+        }
+        .disc-turn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          .play-btn {
+            $PlayBtnSize: 10vw;
+
+            padding: 2vw;
+            width: $PlayBtnSize;
+            height: $PlayBtnSize;
+            color: $White;
+            background-color: rgba($color: #000000, $alpha: 0.3);
+            border: 1px solid $White;
+            border-radius: 50%;
+            z-index: 7;
+            box-sizing: content-box;
+          }
+          .album-img {
+            $AlbumSize: 66.6667vw;
+            position: absolute;
+            width: $AlbumSize;
+            height: $AlbumSize;
+            border-radius: 50%;
+            animation: disc-rotate 10s linear infinite;
+            background-image: url("../../assets/images/disc_default.png");
+            background-size: contain;
+          }
+          .disc-light {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            animation: disc-rotate 10s linear infinite;
+            z-index: 5;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 唱片旋转动画
+@keyframes disc-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
