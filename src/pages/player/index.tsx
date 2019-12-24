@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { PlayArrow as PlayArrowIcon } from "@material-ui/icons";
-import { getSongUrl, getSongDetail } from "../../stores/SongsStore";
+import { getSongUrl, getSongDetail, getLyric } from "../../stores/SongsStore";
 import useRequest from "../../hooks/useRequest";
 import PageView from "../../components/PageView";
+import parseLyric from "../../lib/parseLyric";
+import { isEqual } from "lodash";
 
 import "./style.scss";
 
@@ -19,9 +21,11 @@ function Player() {
 
   const [isPause, setIsPause] = useState(false);
   const [animationState, setAnimationState] = useState("running");
+  const [currentLrcIndex, setCurrentLrcIndex] = useState(0);
 
   const [requestGetSongUrl, song] = useRequest(getSongUrl);
   const [requestGetSongDetail, detail] = useRequest(getSongDetail);
+  const [requestGetLyric, lyricRes] = useRequest(getLyric);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -32,6 +36,9 @@ function Player() {
     });
     requestGetSongDetail({
       query: { ids: id }
+    });
+    requestGetLyric({
+      query: { id }
     });
   }, []);
 
@@ -55,6 +62,21 @@ function Player() {
     setIsPause(!isPause);
   };
 
+  const onAudioTimeUpdate = (e: any) => {
+    const songTimeStamp = parseInt(e.timeStamp);
+    const {
+      lrc: { lyric }
+    } = lyricRes;
+    const lyrics = parseLyric(lyric);
+    for (const v of lyrics) {
+      if (songTimeStamp > v[0]) {
+        console.log(lyrics, v);
+        setCurrentLrcIndex(lyrics.indexOf(v));
+        return;
+      }
+    }
+  };
+
   const renderPlayer = () => {
     const { url } = song.data[0];
     const {
@@ -64,7 +86,12 @@ function Player() {
     return (
       <div className="disc-wrapper" onClick={handlePlayerState}>
         {/* 播放媒体标签 */}
-        <audio ref={audioRef} src={url} autoPlay />
+        <audio
+          ref={audioRef}
+          src={url}
+          autoPlay
+          onTimeUpdate={e => onAudioTimeUpdate(e)}
+        />
         <img src={needleImg} className="needle" />
         <div className="disc">
           <div className="disc-turn">
@@ -85,6 +112,32 @@ function Player() {
     );
   };
 
+  const renderLyric = () => {
+    if (lyricRes) {
+      const {
+        lrc: { lyric }
+      } = lyricRes;
+      const lyrics = parseLyric(lyric);
+      return (
+        <div className="lrc-wrapper">
+          {lyrics.map((item, index) => {
+            console.log(currentLrcIndex);
+            const style = {};
+            index === currentLrcIndex &&
+              Object.assign(style, { color: "#fff" });
+            return (
+              <div key={item[0]} style={style}>
+                {item[1]}
+              </div>
+            );
+          })}
+        </div>
+      );
+    } else {
+      return <div>歌词加载中...</div>;
+    }
+  };
+
   if (!song || !detail) {
     return <div>加载中...</div>;
   }
@@ -95,7 +148,10 @@ function Player() {
         style={{ backgroundImage: `url(${detail.songs[0].al.picUrl})` }}
         className="bg"
       />
-      <div className="inner-wrapper">{renderPlayer()}</div>
+      <div className="inner-wrapper">
+        {renderPlayer()}
+        {renderLyric()}
+      </div>
     </PageView>
   );
 }

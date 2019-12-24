@@ -4,6 +4,7 @@ const API_GET_PERSONALIZED = "/personalized";
 const API_GET_PERSONALIZED_NEW_SONG = "/personalized/newsong";
 const API_GET_SONG_URL = "/song/url";
 const API_GET_SONG_DETAIL = "/song/detail";
+const API_GET_LYRIC = "/lyric";
 
 // 获取推荐歌单
 export const getPersonalized = (params?: object) =>
@@ -17,5 +18,7 @@ export const getSongUrl = (params: object) =>
 // 获取歌曲详情
 export const getSongDetail = (params: object) =>
   request.get(API_GET_SONG_DETAIL, params);
+// 获取歌词
+export const getLyric = (params: object) => request.get(API_GET_LYRIC, params);
 
 export default {};
