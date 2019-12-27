@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { PlayArrow as PlayArrowIcon } from "@material-ui/icons";
+import Audio from "react-player";
 import { getSongUrl, getSongDetail, getLyric } from "../../stores/SongsStore";
 import useRequest from "../../hooks/useRequest";
 import PageView from "../../components/PageView";
 import parseLyric from "../../lib/parseLyric";
-import { isEqual } from "lodash";
+import px from "../../utils/scalePx";
 
 import "./style.scss";
 
@@ -18,10 +19,15 @@ function useQuery() {
 
 function Player() {
   const query = useQuery();
+  // 歌词延迟 ms
+  const lrcOffset = 1000;
+  // 高亮的歌词行数
+  const hightLightRow = 5;
 
   const [isPause, setIsPause] = useState(false);
   const [animationState, setAnimationState] = useState("running");
   const [currentLrcIndex, setCurrentLrcIndex] = useState(0);
+  const [lrcContainerStyle, setLrcContainerStyle] = useState({});
 
   const [requestGetSongUrl, song] = useRequest(getSongUrl);
   const [requestGetSongDetail, detail] = useRequest(getSongDetail);
@@ -68,11 +74,19 @@ function Player() {
       lrc: { lyric }
     } = lyricRes;
     const lyrics = parseLyric(lyric);
+    const hightLightIndex = hightLightRow - 1;
+    const rowHeight = 58;
+
     for (const v of lyrics) {
-      if (songTimeStamp > v[0]) {
-        console.log(lyrics, v);
-        setCurrentLrcIndex(lyrics.indexOf(v));
-        return;
+      if (songTimeStamp > v[0] + lrcOffset) {
+        const index = lyrics.indexOf(v);
+        setCurrentLrcIndex(index);
+        index > hightLightIndex &&
+          setLrcContainerStyle({
+            transform: `translateY(${px(
+              -rowHeight * index + rowHeight * hightLightIndex
+            )})`
+          });
       }
     }
   };
@@ -85,11 +99,12 @@ function Player() {
 
     return (
       <div className="disc-wrapper" onClick={handlePlayerState}>
-        {/* 播放媒体标签 */}
-        <audio
+        {/* 播放音频媒体标签 */}
+        <Audio
           ref={audioRef}
           src={url}
           autoPlay
+          volume={0.45}
           onTimeUpdate={e => onAudioTimeUpdate(e)}
         />
         <img src={needleImg} className="needle" />
@@ -120,17 +135,19 @@ function Player() {
       const lyrics = parseLyric(lyric);
       return (
         <div className="lrc-wrapper">
-          {lyrics.map((item, index) => {
-            console.log(currentLrcIndex);
-            const style = {};
-            index === currentLrcIndex &&
-              Object.assign(style, { color: "#fff" });
-            return (
-              <div key={item[0]} style={style}>
-                {item[1]}
-              </div>
-            );
-          })}
+          <div className="lrc-container" style={lrcContainerStyle}>
+            {lyrics.map((item, index) => {
+              const style = {};
+              index === currentLrcIndex &&
+                Object.assign(style, { color: "#fff" });
+              const content = item[1] || <br />;
+              return (
+                <div key={item[0]} className="lrc-item" style={style}>
+                  {content}
+                </div>
+              );
+            })}
+          </div>
         </div>
       );
     } else {

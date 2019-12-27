@@ -94,6 +94,23 @@
         }
       }
     }
+    .lrc-wrapper {
+    margin: 3vw auto 0;
+      width: 78.9333vw;
+      height: 60vw;
+      overflow: hidden;
+      .lrc-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+        .lrc-item {
+          padding-bottom: 2.1333vw;
+          font-size: 4.2667vw;
+          color: rgba($color: $White, $alpha: 0.6);
+        }
+      }
+    }
   }
 }
 
