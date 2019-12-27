@@ -100,13 +100,13 @@ function Player() {
     return (
       <div className="disc-wrapper" onClick={handlePlayerState}>
         {/* 播放音频媒体标签 */}
-        <Audio
-          ref={audioRef}
+        {/* <Audio
+          // ref={audioRef}
           src={url}
           autoPlay
           volume={0.45}
           onTimeUpdate={e => onAudioTimeUpdate(e)}
-        />
+        /> */}
         <img src={needleImg} className="needle" />
         <div className="disc">
           <div className="disc-turn">
