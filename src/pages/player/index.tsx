@@ -7,6 +7,7 @@ import useRequest from "../../hooks/useRequest";
 import PageView from "../../components/PageView";
 import parseLyric from "../../lib/parseLyric";
 import px from "../../utils/scalePx";
+import BigNumber from "bignumber.js";
 
 import "./style.scss";
 
@@ -20,7 +21,7 @@ function useQuery() {
 function Player() {
   const query = useQuery();
   // 歌词延迟 ms
-  const lrcOffset = 1000;
+  const lrcOffset = -500;
   // 高亮的歌词行数
   const hightLightRow = 5;
 
@@ -28,12 +29,11 @@ function Player() {
   const [animationState, setAnimationState] = useState("running");
   const [currentLrcIndex, setCurrentLrcIndex] = useState(0);
   const [lrcContainerStyle, setLrcContainerStyle] = useState({});
+  const [isEnded, setIsEnded] = useState(false);
 
   const [requestGetSongUrl, song] = useRequest(getSongUrl);
   const [requestGetSongDetail, detail] = useRequest(getSongDetail);
   const [requestGetLyric, lyricRes] = useRequest(getLyric);
-
-  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     const id = query.get("id");
@@ -49,27 +49,36 @@ function Player() {
   }, []);
 
   useEffect(() => {
-    if (audioRef.current) {
-      const audioRefCurrent = audioRef.current;
-      if (isPause) {
-        audioRefCurrent.pause();
-        setAnimationState("paused");
-        console.log("paused");
-      } else {
-        audioRefCurrent.play();
-        setAnimationState("running");
-        console.log("playing");
+    if (isPause) {
+      setAnimationState("paused");
+    } else {
+      if (isEnded) {
+        setLrcContainerStyle({
+          transform: "translateY(0)"
+        });
+        setIsEnded(false);
       }
+      setAnimationState("running");
     }
   }, [isPause]);
+
+  useEffect(() => {
+    if (isEnded) {
+      setIsPause(true);
+    }
+  }, [isEnded]);
 
   const handlePlayerState = () => {
     console.log("click");
     setIsPause(!isPause);
   };
 
+  const onEnded = () => {
+    setIsEnded(true);
+  };
+
   const onAudioTimeUpdate = (e: any) => {
-    const songTimeStamp = parseInt(e.timeStamp);
+    const songTimeStamp = new BigNumber(e.playedSeconds).times(1000).toNumber();
     const {
       lrc: { lyric }
     } = lyricRes;
@@ -100,13 +109,15 @@ function Player() {
     return (
       <div className="disc-wrapper" onClick={handlePlayerState}>
         {/* 播放音频媒体标签 */}
-        {/* <Audio
-          // ref={audioRef}
-          src={url}
-          autoPlay
+        <Audio
+          url={url}
+          playing={!isPause}
           volume={0.45}
-          onTimeUpdate={e => onAudioTimeUpdate(e)}
-        /> */}
+          width={0}
+          height={0}
+          onProgress={e => onAudioTimeUpdate(e)}
+          onEnded={onEnded}
+        />
         <img src={needleImg} className="needle" />
         <div className="disc">
           <div className="disc-turn">
@@ -129,10 +140,10 @@ function Player() {
 
   const renderLyric = () => {
     if (lyricRes) {
-      const {
-        lrc: { lyric }
-      } = lyricRes;
+      const { lrc } = lyricRes;
+      const { lyric } = lrc || {};
       const lyrics = parseLyric(lyric);
+
       return (
         <div className="lrc-wrapper">
           <div className="lrc-container" style={lrcContainerStyle}>
