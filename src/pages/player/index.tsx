@@ -290,7 +290,7 @@ function Player() {
   };
 
   if (!song || !detail) {
-    return <div>加载中.......</div>;
+    return <div>页面加载中...</div>;
   }
 
   return (
