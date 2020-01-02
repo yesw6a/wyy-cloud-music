@@ -7,7 +7,7 @@ import useRequest from "../../../../../hooks/useRequest";
 
 import "./style.scss";
 
-interface PersonalizedNewSong {
+interface PersonalizedNewSongProps {
   alg: string;
   canDislike: boolean;
   copywriter: string;
@@ -37,7 +37,7 @@ function PersonalizedNewSong() {
     id,
     name,
     song: { album, artists, alias }
-  }: PersonalizedNewSong) => {
+  }: PersonalizedNewSongProps) => {
     return (
       <div className="item-wrapper" onClick={() => handlePlay(id)}>
         <div className="song-info">
@@ -84,7 +84,7 @@ function PersonalizedNewSong() {
     <div className="personalized_new_song-wrapper">
       {!newSongList
         ? renderSkel()
-        : newSongList.result.map((item: PersonalizedNewSong) => {
+        : newSongList.result.map((item: PersonalizedNewSongProps) => {
             return <div key={item.id}>{renderItem(item)}</div>;
           })}
     </div>

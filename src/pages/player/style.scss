@@ -1,9 +1,11 @@
 @import "../../App.scss";
 
+$MoreListItemCardSize: 32.8vw;
+
 .player-wrapper {
   overflow: hidden;
   .bg {
-    filter: blur(4px) brightness(50%);
+    filter: blur(8px) brightness(45%);
     background-color: #161824;
     background-position: 50%;
     background-repeat: no-repeat;
@@ -24,7 +26,9 @@
     top: 0;
     width: 100vw;
     height: 100vh;
+    padding-bottom: $BottomNavHeight;
     overflow-x: hidden;
+    box-sizing: border-box;
     .disc-wrapper {
       position: relative;
       padding-top: 18.6667vw;
@@ -109,6 +113,147 @@
           padding-bottom: 2.1333vw;
           font-size: 4.2667vw;
           color: rgba($color: $White, $alpha: 0.6);
+        }
+      }
+    }
+    .more-list-wrapper {
+      margin-top: 8vw;
+      padding-bottom: 8vw;
+      .title {
+        padding-left: 2.6667vw;
+        line-height: 4.8vw;
+        font-size: 4.2667vw;
+        color: $White;
+        border-left: 0.5vw solid $Primary;
+      }
+      .lists {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 3.2vw;
+        .more-list-item {
+          margin: 0 0.6667vw;
+          .card {
+            position: relative;
+            .img {
+              width: $MoreListItemCardSize;
+              height: $MoreListItemCardSize;
+            }
+            .play-count {
+              position: absolute;
+              right: 5px;
+              top: 2px;
+              padding-left: 3.4667vw;
+              font-size: 1.6vw;
+              color: $White;
+              text-shadow: 0.1333vw 0 0 rgba(0, 0, 0, 0.15);
+              background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMiAyMCI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBmaWxsPSIjMDQwMDAwIiBkPSJNMjIgMTYuNzc3YzAgMS4yMzMtMS4xMjEgMi4yMzMtMi41MDYgMi4yMzMtMS4zODQgMC0yLjUwNi0xLTIuNTA2LTIuMjMzdi0yLjU1M2MwLTEuMjM0IDEuMTIyLTIuMjMzIDIuNTA2LTIuMjMzLjE3NCAwIC4zNDMuMDE3LjUwNi4wNDZ2LTEuMzdoLS4wMzNjLjAxNy0uMjIuMDMzLS40NDEuMDMzLS42NjZhOCA4IDAgMCAwLTE2IDBjMCAuMjI1LjAxNi40NDYuMDM0LjY2Nkg0djEuMzdjLjE2My0uMDI5LjMzMy0uMDQ2LjUwNS0uMDQ2IDEuMzg0IDAgMi41MDYuOTk5IDIuNTA2IDIuMjMzdjIuNTUzYzAgMS4yMzMtMS4xMjIgMi4yMzMtMi41MDYgMi4yMzNTMiAxOC4wMTEgMiAxNi43Nzd2LTIuNTUzYzAtLjI1OC4wNTktLjUwMS4xNDgtLjczQS45ODIuOTgyIDAgMCAxIDIgMTMuMDAxdi0yLjY2N2MwLS4wMjMuMDEyLS4wNDMuMDEzLS4wNjctLjAwNC0uMDg4LS4wMTMtLjE3Ni0uMDEzLS4yNjYgMC01LjUyMyA0LjQ3Ny0xMCAxMC0xMHMxMCA0LjQ3NyAxMCAxMGMwIC4wOS0uMDA5LjE3OC0uMDE0LjI2Ni4wMDIuMDI0LjAxNC4wNDQuMDE0LjA2N3YyYS45ODguOTg4IDAgMCAxLS4zNi43NTNjLjIyNC4zMzQuMzYuNzIuMzYgMS4xMzh2Mi41NTIiIG9wYWNpdHk9Ii4xNSIvPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZmlsbD0iI2ZmZiIgZD0iTTIwIDE2Ljc3N2MwIDEuMjMzLTEuMTIxIDIuMjMzLTIuNTA2IDIuMjMzLTEuMzg0IDAtMi41MDYtMS0yLjUwNi0yLjIzM3YtMi41NTNjMC0xLjIzNCAxLjEyMi0yLjIzMyAyLjUwNi0yLjIzMy4xNzQgMCAuMzQzLjAxNy41MDYuMDQ2di0xLjM3aC0uMDMzYy4wMTctLjIyLjAzMy0uNDQxLjAzMy0uNjY2YTggOCAwIDAgMC0xNiAwYzAgLjIyNS4wMTYuNDQ2LjAzNC42NjZIMnYxLjM3Yy4xNjMtLjAyOS4zMzMtLjA0Ni41MDUtLjA0NiAxLjM4NCAwIDIuNTA2Ljk5OSAyLjUwNiAyLjIzM3YyLjU1M2MwIDEuMjMzLTEuMTIyIDIuMjMzLTIuNTA2IDIuMjMzUzAgMTguMDExIDAgMTYuNzc3di0yLjU1M2MwLS4yNTguMDU5LS41MDEuMTQ4LS43M0EuOTgyLjk4MiAwIDAgMSAwIDEzLjAwMXYtMi42NjdjMC0uMDIzLjAxMi0uMDQzLjAxMy0uMDY3LS4wMDQtLjA4OC0uMDEzLS4xNzYtLjAxMy0uMjY2IDAtNS41MjMgNC40NzctMTAgMTAtMTBzMTAgNC40NzcgMTAgMTBjMCAuMDktLjAwOS4xNzgtLjAxNC4yNjYuMDAyLjAyNC4wMTQuMDQ0LjAxNC4wNjd2MmEuOTg4Ljk4OCAwIDAgMS0uMzYuNzUzYy4yMjQuMzM0LjM2LjcyLjM2IDEuMTM4djIuNTUyIi8+PC9zdmc+");
+              background-position: 0;
+              background-repeat: no-repeat;
+              background-size: 2.9333vw 2.6667vw;
+              z-index: 3;
+            }
+            &::after {
+              content: " ";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 5.3333vw;
+              background-image: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.2),
+                transparent
+              );
+              z-index: 2;
+            }
+          }
+        }
+        .name {
+          padding: 0 1.6vw;
+          max-width: $MoreListItemCardSize;
+          line-height: 1.2;
+          min-height: 4vw;
+          font-size: 3.4667vw;
+          color: $White;
+
+          @include multi-line-ellipsis(1);
+        }
+        .author-row {
+          padding: 0 5.0667vw 0 1.6vw;
+          height: 5.3333vw;
+          .author {
+            position: relative;
+            max-width: $MoreListItemCardSize;
+            font-size: 3.2vw;
+            color: rgba($color: $White, $alpha: 0.6);
+            float: left;
+
+            @include single-line-ellipsis();
+            .tag-daren {
+              position: absolute;
+              top: 0.8vw;
+              right: -3.4667vw;
+              display: inline-block;
+              width: 2.6667vw;
+              height: 2.6667vw;
+              background: url("../../assets/images/tag_user.png") no-repeat;
+              background-size: 8vw auto;
+              background-position: -4vw 0;
+            }
+          }
+        }
+      }
+    }
+    .more-songs-wrapper {
+      margin-top: 2.6667vw;
+      padding-bottom: 8vw;
+      .title {
+        padding-left: 2.6667vw;
+        line-height: 4.8vw;
+        font-size: 4.2667vw;
+        color: $White;
+        border-left: 0.5vw solid $Primary;
+      }
+      .item-wrapper {
+        display: flex;
+        align-items: center;
+        margin-left: 2.6667vw;
+        border-bottom: 0.1333vw solid rgba($color: $White, $alpha: 0.2);
+        .cover-img {
+          $CoverImgSize: 10.6667vw;
+          margin-right: 2.6667vw;
+          width: $CoverImgSize;
+          height: $CoverImgSize;
+        }
+        .song-info {
+          flex: 1;
+          padding: 1.6vw 0;
+          .song-name {
+            font-size: 4.5333vw;
+
+            @include single-line-ellipsis();
+            .name {
+              font-size: 4vw;
+              color: $White;
+            }
+            .info {
+              margin-left: 1.0667vw;
+              color: rgba($color: $White, $alpha: 0.6);
+            }
+          }
+          .author {
+            font-size: 3.2vw;
+            color: rgba($color: $White, $alpha: 0.6);
+          }
+        }
+        .play {
+          padding: 0 2.6667vw;
+          .icon-play {
+            $IconPlaySize: 7vw;
+            width: $IconPlaySize;
+            height: $IconPlaySize;
+            color: $BlackL;
+          }
         }
       }
     }

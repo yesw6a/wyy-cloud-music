@@ -1,18 +1,54 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { PlayArrow as PlayArrowIcon } from "@material-ui/icons";
+import {
+  PlayArrow as PlayArrowIcon,
+  PlayCircleOutlineOutlined as PlayCircleOutlineOutlinedIcon
+} from "@material-ui/icons";
 import Audio from "react-player";
-import { getSongUrl, getSongDetail, getLyric } from "../../stores/SongsStore";
+import BigNumber from "bignumber.js";
+import {
+  getSongUrl,
+  getSongDetail,
+  getLyric,
+  getSimiPlayList,
+  getSimiSongs
+} from "../../stores/SongsStore";
 import useRequest from "../../hooks/useRequest";
 import PageView from "../../components/PageView";
 import parseLyric from "../../lib/parseLyric";
 import px from "../../utils/scalePx";
-import BigNumber from "bignumber.js";
+import UnitConversion from "../../lib/unitConversion";
 
 import "./style.scss";
 
 const discLightImg = require("../../assets/images/disc_light.png");
 const needleImg = require("../../assets/images/needle.png");
+
+interface SimiPlayListProps {
+  id: number;
+  name: string;
+  playCount: number;
+  coverImgUrl: string;
+  creator: {
+    nickname: string;
+    vipType: number;
+  };
+}
+
+interface SimiSongsProps {
+  id: number;
+  name: string;
+  alias: Array<object>;
+  album: {
+    name: string;
+    picUrl: string;
+  };
+  artists: [
+    {
+      name: string;
+    }
+  ];
+}
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -34,18 +70,17 @@ function Player() {
   const [requestGetSongUrl, song] = useRequest(getSongUrl);
   const [requestGetSongDetail, detail] = useRequest(getSongDetail);
   const [requestGetLyric, lyricRes] = useRequest(getLyric);
+  const [requestGetSimiPlayList, simiPlayList] = useRequest(getSimiPlayList);
+  const [requestGetSimiSongs, simiSongs] = useRequest(getSimiSongs);
 
   useEffect(() => {
     const id = query.get("id");
-    requestGetSongUrl({
-      query: { id }
-    });
-    requestGetSongDetail({
-      query: { ids: id }
-    });
-    requestGetLyric({
-      query: { id }
-    });
+
+    requestGetSongUrl({ query: { id } });
+    requestGetSongDetail({ query: { ids: id } });
+    requestGetLyric({ query: { id } });
+    requestGetSimiPlayList({ query: { id } });
+    requestGetSimiSongs({ query: { id } });
   }, []);
 
   useEffect(() => {
@@ -115,7 +150,7 @@ function Player() {
           volume={0.45}
           width={0}
           height={0}
-          onProgress={e => onAudioTimeUpdate(e)}
+          onProgress={(e: any) => onAudioTimeUpdate(e)}
           onEnded={onEnded}
         />
         <img src={needleImg} className="needle" />
@@ -166,6 +201,94 @@ function Player() {
     }
   };
 
+  // 包含这首歌的歌单
+  const renderMoreList = () => {
+    if (simiPlayList) {
+      const { playlists } = simiPlayList;
+      return (
+        !!playlists.length && (
+          <div className="more-list-wrapper">
+            <div className="title">包含这首歌的歌单</div>
+            <div className="lists">
+              {playlists.map(
+                ({
+                  id,
+                  name,
+                  playCount,
+                  coverImgUrl,
+                  creator: { nickname, vipType }
+                }: SimiPlayListProps) => {
+                  return (
+                    <div key={id} className="more-list-item">
+                      <div className="card">
+                        <img src={coverImgUrl} className="img" />
+                        <span className="play-count">
+                          {UnitConversion(playCount)}
+                        </span>
+                      </div>
+                      <div className="name">{name}</div>
+                      <div className="author-row">
+                        <span className="author">
+                          by {nickname}
+                          {vipType === 11 && <span className="tag-daren" />}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        )
+      );
+    }
+  };
+
+  // 喜欢这首歌的人也听
+  const renderSongs = () => {
+    if (simiSongs) {
+      const { songs } = simiSongs;
+      return (
+        !!songs.length && (
+          <div className="more-songs-wrapper">
+            <div className="title">喜欢这首歌的人也听</div>
+            <div className="list">
+              {songs.map(
+                ({
+                  id,
+                  name,
+                  alias,
+                  album: { name: albumName, picUrl },
+                  artists: [{ name: artistsName }]
+                }: SimiSongsProps) => {
+                  return (
+                    <div className="item-wrapper">
+                      <img src={picUrl} className="cover-img" />
+                      <div className="song-info">
+                        <div className="song-name">
+                          <span className="name">{name}</span>
+                          {Array.isArray(alias) && !!alias.length && (
+                            <span className="info">({alias[0]})</span>
+                          )}
+                        </div>
+                        <div className="author">
+                          {artistsName} - {albumName}
+                        </div>
+                      </div>
+                      <div className="play">
+                        <PlayCircleOutlineOutlinedIcon className="icon-play" />
+                      </div>
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        )
+      );
+    }
+  };
+
   if (!song || !detail) {
     return <div>加载中...</div>;
   }
@@ -179,6 +302,8 @@ function Player() {
       <div className="inner-wrapper">
         {renderPlayer()}
         {renderLyric()}
+        {renderMoreList()}
+        {renderSongs()}
       </div>
     </PageView>
   );

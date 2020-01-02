@@ -8,13 +8,14 @@ $BlackL: #888888;
 
 $White: #ffffff;
 
+$BottomNavHeight: 14.9333vw;
+
 .app {
   position: relative;
 }
 
 // #region: 单行文字溢出省略号显示（某些浏览器需设置宽度）
 @mixin single-line-ellipsis() {
-  overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 1;
