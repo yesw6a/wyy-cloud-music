@@ -10,4 +10,4 @@ RUN rm -f package-lock.json \
     && npm install
 
 EXPOSE 8000
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
