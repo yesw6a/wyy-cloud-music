@@ -1,4 +1,4 @@
-FROM nginx
+FROM node:lts-alpine
 
 RUN rm -f package-lock.json \
     ; rm -rf node_modules \
